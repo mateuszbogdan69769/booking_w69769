@@ -12,6 +12,15 @@ public static class ConfigureServices
 
         object value = services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
 
+        services.AddCors(p => p.AddPolicy("corspolicy", builder =>
+        {
+            builder.WithOrigins("http://localhost:5173")
+                   .AllowAnyMethod()
+                   .AllowAnyHeader()
+                   .AllowCredentials()
+                   .WithExposedHeaders("Content-Disposition");
+        }));
+
         services.AddControllers();
 
         services.AddSwaggerGen(c =>

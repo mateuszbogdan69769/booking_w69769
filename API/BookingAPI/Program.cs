@@ -13,6 +13,7 @@ builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddApiApplicationServices(builder.Configuration);
 
 var app = builder.Build();
+app.UseCors("corspolicy");
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
