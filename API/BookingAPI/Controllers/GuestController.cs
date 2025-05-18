@@ -9,9 +9,9 @@ namespace BookingAPI.Controllers;
 public class GuestController : BasicApiController
 {
     [HttpGet]
-    public async Task<ActionResult<List<GuestDto>>> GetGuests(GetGuestsQuery query)
+    public async Task<ActionResult<List<GuestDto>>> GetGuests([FromQuery] string? searchQuery)
     {
-        return await Mediator.Send(query);
+        return await Mediator.Send(new GetGuestsQuery(searchQuery));
     }
 
     [HttpPost]

@@ -7,6 +7,7 @@ namespace ApiApplication.Queries.Guests;
 public class GetGuestsQuery : IRequest<List<GuestDto>>
 {
     public string? SearchQuery { get; set; }
+    public GetGuestsQuery(string? searchQuery) => SearchQuery = searchQuery;
 }
 
 public class GetGuestsQueryHandler : IRequestHandler<GetGuestsQuery, List<GuestDto>>
