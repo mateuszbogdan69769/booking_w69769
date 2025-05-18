@@ -9,13 +9,13 @@ public class GuestDto
 
     public List<BookingDto>? Bookings { get; set; }
 
-    public static GuestDto Map(Guest guest)
+    public static GuestDto Map(Guest guest, bool mapBookings = false)
     {
         return new GuestDto()
         {
             Name = guest.Name,
             Surname = guest.Surname,
-            Bookings = guest.Bookings != null ? guest.Bookings.Select(BookingDto.Map).ToList() : null
+            Bookings = mapBookings && guest.Bookings != null ? guest.Bookings.Select(BookingDto.Map).ToList() : null
         };
     }
 }

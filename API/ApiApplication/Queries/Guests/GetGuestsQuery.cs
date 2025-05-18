@@ -22,6 +22,6 @@ public class GetGuestsQueryHandler : IRequestHandler<GetGuestsQuery, List<GuestD
     {
         var result = await _guestService.GetFilteredGuests(request.SearchQuery, includeBookings: true);
 
-        return result.Select(GuestDto.Map).ToList();
+        return result.Select(x => GuestDto.Map(x, mapBookings: true)).ToList();
     }
 }

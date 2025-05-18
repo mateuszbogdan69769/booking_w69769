@@ -1,3 +1,7 @@
+using System.ComponentModel.DataAnnotations;
+using System.Net.Http.Json;
+using System.Text;
+using System.Text.Json;
 using ApiApplication.Bookings.Commands;
 using ApiApplication.DTOs;
 using ApiApplication.Queries.Bookings;
@@ -9,9 +13,40 @@ namespace BookingAPI.Controllers;
 public class BookingController : BasicApiController
 {
     [HttpGet]
-    public async Task<ActionResult<List<BookingDto>>> GetBookings(GetBookingsQuery query)
+    public async Task<ActionResult<List<BookingDto>>> GetBookings([FromQuery] string filter)
     {
-        return await Mediator.Send(query);
+        if (string.IsNullOrWhiteSpace(filter))
+        {
+            throw new ValidationException("Filter jest pusty");
+        }
+
+        try
+        {
+            byte[] decodedBytes = Convert.FromBase64String(filter);
+            string jsonString = Encoding.UTF8.GetString(decodedBytes);
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+
+            var query = JsonSerializer.Deserialize<GetBookingsQuery>(jsonString, options);
+
+            if (query == null)
+            {
+                throw new ValidationException("Nie udało się sparsować zapytania");
+            }
+
+            return await Mediator.Send(query);
+        }
+        catch (FormatException)
+        {
+            throw new ValidationException("Nieprawidłowy format base64");
+        }
+        catch (JsonException)
+        {
+            throw new ValidationException("Nieprawidłowy format JSON");
+        }
     }
 
     [HttpPost]
