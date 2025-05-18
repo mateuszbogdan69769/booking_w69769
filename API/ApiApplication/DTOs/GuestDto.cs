@@ -4,6 +4,7 @@ namespace ApiApplication.DTOs;
 
 public class GuestDto
 {
+    public int Id { get; set; }
     public string Name { get; set; } = null!;
     public string Surname { get; set; } = null!;
 
@@ -13,6 +14,7 @@ public class GuestDto
     {
         return new GuestDto()
         {
+            Id = guest.Id,
             Name = guest.Name,
             Surname = guest.Surname,
             Bookings = mapBookings && guest.Bookings != null ? guest.Bookings.Select(BookingDto.Map).ToList() : null

@@ -4,6 +4,7 @@ namespace ApiApplication.DTOs;
 
 public class BookingDto
 {
+    public int Id { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
     public int PartySize { get; set; }
@@ -14,6 +15,7 @@ public class BookingDto
     {
         return new BookingDto()
         {
+            Id = booking.Id,
             StartDate = booking.StartDate,
             EndDate = booking.EndDate,
             PartySize = booking.PartySize,
