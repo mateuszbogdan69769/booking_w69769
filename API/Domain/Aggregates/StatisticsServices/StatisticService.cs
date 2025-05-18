@@ -19,12 +19,13 @@ public class StatisticService : IStatisticService
     {
         var allBookings = await _bookingService.GetAllBookings();
         var todayDateOnly = DateOnly.FromDateTime(DateTime.Now);
+
         var bookingsToday = allBookings.Where(x => DateOnly.FromDateTime(x.StartDate) == todayDateOnly).ToList();
         var peoplesToday = bookingsToday.Select(x => x.PartySize).Sum();
-        
-        var allGuests = await _guestService.GetAllGuests();
 
-        var result = new DashboardStats(allBookings.Count, bookingsToday.Count, allGuests.Count, peoplesToday);
+        var allGuestsCount = allBookings.Select(x => x.PartySize).Sum();
+
+        var result = new DashboardStats(allBookings.Count, bookingsToday.Count, allGuestsCount, peoplesToday);
 
         return result;
     }
