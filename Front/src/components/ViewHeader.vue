@@ -12,6 +12,14 @@
         v-model="searchStore.searchBarValue"
         style="max-width: min(100%, 300px)"
       />
+
+      <v-icon
+        v-if="display.smAndDown.value"
+        size="24"
+        @click="globalStore.navigationOpened = !globalStore.navigationOpened"
+      >
+        mdi-menu
+      </v-icon>
     </div>
   </header>
 </template>
@@ -20,8 +28,13 @@ import router from '@/router/router';
 import SearchBar from './SearchBar.vue';
 import { useSearchStore } from '@/stores/search.store';
 import { computed } from 'vue';
+import { useGlobalStore } from '@/stores/global.store';
+import { useDisplay } from 'vuetify';
 
 const searchStore = useSearchStore();
+const globalStore = useGlobalStore();
+
+const display = useDisplay();
 
 const currentRoute = computed(() => router.currentRoute.value);
 const routeMeta = computed(() => currentRoute.value.meta);

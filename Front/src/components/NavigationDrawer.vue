@@ -1,5 +1,11 @@
 <template>
-  <v-navigation-drawer class="bg-deep-purple pt-5" theme="dark" permanent>
+  <v-navigation-drawer
+    v-model="globalStore.navigationOpened"
+    class="bg-deep-purple pt-5"
+    theme="dark"
+    :permanent="!display.smAndDown.value"
+    :class="{ 'static-drawer': !display.smAndDown.value }"
+  >
     <v-list>
       <v-list-item
         v-for="(item, index) in BookingMenuItems"
@@ -28,8 +34,13 @@
 import { BookingMenuItems } from '@/data/BookingMenuItems';
 import { useConfirmationDialog } from '@/helpers/useConfirmationDialog';
 import { useAccountStore } from '@/stores/account.store';
+import { useGlobalStore } from '@/stores/global.store';
+import { useDisplay } from 'vuetify';
 
 const accountStore = useAccountStore();
+const globalStore = useGlobalStore();
+
+const display = useDisplay();
 
 async function showLogoutDialog(): Promise<void> {
   const title = 'Czy na pewno chcesz się wylogować?';
@@ -40,7 +51,7 @@ async function showLogoutDialog(): Promise<void> {
 }
 </script>
 <style lang="scss" scoped>
-.v-navigation-drawer {
+.static-drawer {
   position: static !important;
 }
 </style>
