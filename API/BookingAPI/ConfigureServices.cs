@@ -14,7 +14,7 @@ public static class ConfigureServices
 
         services.AddCors(p => p.AddPolicy("corspolicy", builder =>
         {
-            builder.WithOrigins("http://localhost:5173")
+            builder.WithOrigins("http://localhost:5173", "gentle-forest-0a8d7bb03.6.azurestaticapps.net")
                    .AllowAnyMethod()
                    .AllowAnyHeader()
                    .AllowCredentials()
