@@ -1,7 +1,7 @@
 using BookingAPI;
 using Domain;
-using Infrastructure;
 using ApiApplication;
+using Infrastructure;
 using BookingAPI.Misc;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
