@@ -111,8 +111,8 @@
   </v-dialog>
 </template>
 <script lang="ts" setup>
-import TimePicker from '../../../components/TimePicker.vue';
 import DatePicker from '../../../components/DatePicker.vue';
+import TimePicker from '../../../components/TimePicker.vue';
 import { onMounted, ref } from 'vue';
 import { useBookingsStore } from '../bookings.store';
 import { BookingTableHeaders } from '../data/BookingTableHeaders';
