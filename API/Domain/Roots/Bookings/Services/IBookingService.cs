@@ -10,7 +10,7 @@ public interface IBookingService
 
     Task<Booking?> GetBookingById(int id);
 
-    Task UpdateBooking(int id, DateTime startDate, DateTime endDate, int partySize, string note);
+    Task UpdateBooking(int id, DateTime startDate, DateTime endDate, int partySize, string note, string name, string surname);
 
     Task DeleteReservationById(int id);
 }

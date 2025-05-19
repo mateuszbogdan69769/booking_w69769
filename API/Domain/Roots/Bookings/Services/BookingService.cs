@@ -36,14 +36,19 @@ public class BookingService : IBookingService
         return await _bookingRepository.FirstOrDefaultAsync(spec);
     }
 
-    public async Task UpdateBooking(int id, DateTime startDate, DateTime endDate, int partySize, string note)
+    public async Task UpdateBooking(int id, DateTime startDate, DateTime endDate, int partySize, string note, string name, string surname)
     {
         var booking = await GetBookingById(id);
         if (booking is null)
         {
             throw new ValidationException("Rezerwacja nie znaleziona");
         }
+        if (booking.Guest is null)
+        {
+            throw new ValidationException("Rezerwacja nie ma gościa");
+        }
         booking.Update(startDate, endDate, partySize, note);
+        booking.Guest.Update(name, surname);
         await _bookingRepository.UpdateAsync(booking);
     }
 
