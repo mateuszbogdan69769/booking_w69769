@@ -1,5 +1,6 @@
 import { Booking } from '@/ApiModels/Booking';
 import { DateTimeTransformer } from '@/helpers/DateTimeTransformer';
+import { IValidationResult } from '@/interfaces/IValidationResult';
 import { Transform } from 'class-transformer';
 import { DateTime } from 'luxon';
 
@@ -22,5 +23,22 @@ export class BookingViewModel {
     this.endDate = booking.endDate;
     this.partySize = booking.partySize;
     this.note = booking.note;
+  }
+
+  get v$(): IValidationResult {
+    return {
+      name: {
+        required: {
+          $validator: !!this.name,
+          $message: 'Imię jest wymagane'
+        }
+      },
+      surname: {
+        required: {
+          $validator: !!this.surname,
+          $message: 'Nazwisko jest wymagane'
+        }
+      }
+    };
   }
 }

@@ -1,10 +1,11 @@
 <template>
   <v-navigation-drawer
-    v-model="globalStore.navigationOpened"
+    :model-value="!display.smAndDown.value || globalStore.navigationOpened"
     class="bg-deep-purple pt-5"
     theme="dark"
     :permanent="!display.smAndDown.value"
     :class="{ 'static-drawer': !display.smAndDown.value }"
+    @update:model-value="updateNavigationOpened"
   >
     <v-list>
       <v-list-item
@@ -41,6 +42,11 @@ const accountStore = useAccountStore();
 const globalStore = useGlobalStore();
 
 const display = useDisplay();
+
+function updateNavigationOpened(value: boolean): void {
+  if (!display.smAndDown.value) return;
+  globalStore.navigationOpened = value;
+}
 
 async function showLogoutDialog(): Promise<void> {
   const title = 'Czy na pewno chcesz się wylogować?';
