@@ -1,9 +1,16 @@
 import { LinkHelper } from '@/helpers/LinkHelper';
 import { MessageHelper } from '@/helpers/MessageHelper';
 import { MessageModel } from '@/models/MessageModel';
+import { useAccountStore } from '@/stores/account.store';
 import { useGlobalStore } from '@/stores/global.store';
 import axios from 'axios';
 import { instanceToPlain } from 'class-transformer';
+
+function getAuthorizationHeader(): { Authorization: string } {
+  const accountStore = useAccountStore();
+
+  return { Authorization: `Bearer ${accountStore.accessToken}` };
+}
 
 export async function getData<T>(
   apiRoute: string,
@@ -20,7 +27,9 @@ export async function getData<T>(
 
   const apiResponse = await globalStore.useLoading(async () => {
     try {
-      return await axios.get<T>(url);
+      return await axios.get<T>(url, {
+        headers: getAuthorizationHeader()
+      });
     } catch (e: any) {
       handleError(e);
       throw e;
@@ -43,7 +52,9 @@ export async function postData<RequestType, ReturnType>(
 
   const postApiResponse = await useGlobalStore().useLoading(async () => {
     try {
-      return await axios.post<ReturnType>(url, instanceToPlain(body));
+      return await axios.post<ReturnType>(url, instanceToPlain(body), {
+        headers: getAuthorizationHeader()
+      });
     } catch (e: any) {
       handleError(e);
       throw e;
@@ -70,7 +81,9 @@ export async function putData<RequestType, ReturnType>(
 
   const postApiResponse = await useGlobalStore().useLoading(async () => {
     try {
-      return await axios.put<ReturnType>(url, instanceToPlain(body));
+      return await axios.put<ReturnType>(url, instanceToPlain(body), {
+        headers: getAuthorizationHeader()
+      });
     } catch (e: any) {
       handleError(e);
       throw e;
@@ -96,7 +109,9 @@ export async function deleteData(
 
   await useGlobalStore().useLoading(async () => {
     try {
-      await axios.delete(url);
+      await axios.delete(url, {
+        headers: getAuthorizationHeader()
+      });
     } catch (e: any) {
       handleError(e);
       throw e;

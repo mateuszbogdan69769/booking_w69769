@@ -14,6 +14,8 @@ public class AccountConfiguration : IEntityTypeConfiguration<Account>
 
         entity.Property(e => e.Id).HasColumnType("integer");
 
+        entity.Property(e => e.ExternalId).HasMaxLength(36);
+
         entity.Property(e => e.Username).HasColumnType("text");
         entity.HasIndex(e => e.Username).IsUnique();
 

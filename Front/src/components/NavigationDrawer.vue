@@ -8,6 +8,8 @@
     @update:model-value="updateNavigationOpened"
   >
     <v-list>
+      <v-list-item class="text-center">{{ userEmail }}</v-list-item>
+
       <v-list-item
         v-for="(item, index) in BookingMenuItems"
         :key="index"
@@ -36,12 +38,20 @@ import { BookingMenuItems } from '@/data/BookingMenuItems';
 import { useConfirmationDialog } from '@/helpers/useConfirmationDialog';
 import { useAccountStore } from '@/stores/account.store';
 import { useGlobalStore } from '@/stores/global.store';
+import { computed } from 'vue';
 import { useDisplay } from 'vuetify';
 
 const accountStore = useAccountStore();
 const globalStore = useGlobalStore();
 
 const display = useDisplay();
+
+const userEmail = computed(() => {
+  const token = accountStore.accessToken.split('.')[1];
+  const data = JSON.parse(atob(token));
+
+  return data.email;
+});
 
 function updateNavigationOpened(value: boolean): void {
   if (!display.smAndDown.value) return;

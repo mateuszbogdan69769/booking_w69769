@@ -1,10 +1,12 @@
-using Domain.Roots.Accounts.Services;
+using Domain.Enums;
 using FluentValidation;
 using MediatR;
+using Microsoft.Extensions.Configuration;
+using Supabase;
 
 namespace ApiApplication.Bookings.Commands;
 
-public class LoginCommand : IRequest<bool>
+public class LoginCommand : IRequest<AuthorizationData?>
 {
     public string Username { get; set; } = null!;
     public string Password { get; set; } = null!;
@@ -19,17 +21,39 @@ public class LoginCommandValidator : AbstractValidator<LoginCommand>
     }
 }
 
-public class LoginCommandHandler : IRequestHandler<LoginCommand, bool>
+public class LoginCommandHandler : IRequestHandler<LoginCommand, AuthorizationData?>
 {
-    private readonly IAccountService _accountService;
+    private readonly IConfiguration _configuration;
 
-    public LoginCommandHandler(IAccountService accountService)
+    public LoginCommandHandler(IConfiguration configuration)
     {
-        _accountService = accountService;
+        _configuration = configuration;
     }
 
-    public async Task<bool> Handle(LoginCommand request, CancellationToken cancellationToken)
+    public async Task<AuthorizationData?> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
-        return await _accountService.Login(request.Username, request.Password);
+        var options = new SupabaseOptions
+        {
+            AutoConnectRealtime = true
+        };
+
+        var supabase = new Client(_configuration[ConfigConsts.SupabaseUrl], _configuration[ConfigConsts.SupabaseKey], options);
+        await supabase.InitializeAsync();
+
+        var session = await supabase.Auth.SignIn(request.Username, request.Password);
+
+        return new AuthorizationData()
+        {
+            AccessToken = session?.AccessToken,
+            RefreshToken = session?.RefreshToken,
+            ExpiresIn = (int)session?.ExpiresIn,
+        };
     }
+}
+
+public class AuthorizationData
+{
+    public string AccessToken { get; set; }
+    public string RefreshToken { get; set; }
+    public int ExpiresIn { get; set; }
 }

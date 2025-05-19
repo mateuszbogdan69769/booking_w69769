@@ -38,6 +38,10 @@ const stats = computed(() => [
 ]);
 
 async function loadStats(): Promise<void> {
+  setTimeout(() => {
+    loading.value = false;
+  }, 4000);
+
   loading.value = true;
   statsData.value = await getStatistics();
   loading.value = false;
