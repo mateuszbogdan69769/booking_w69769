@@ -24,6 +24,8 @@ public class BookingConfiguration : IEntityTypeConfiguration<Booking>
 
         entity.Property(e => e.Note).HasColumnType("text");
 
+        entity.Property(e => e.CreatedAt).HasColumnType("timestamp with time zone");
+
         entity.HasOne(x => x.Guest)
               .WithMany(x => x.Bookings)
               .HasForeignKey(x => x.GuestId)

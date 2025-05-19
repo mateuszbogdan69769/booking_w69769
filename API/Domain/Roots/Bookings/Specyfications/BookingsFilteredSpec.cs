@@ -12,7 +12,8 @@ internal class BookingsFilteredSpec : Specification<Booking>
 
         if (!String.IsNullOrEmpty(searchQuery))
         {
-            Query.Where(x => (x.Guest.Name + " " + x.Guest.Surname).ToLower().Trim().Contains(searchQuery.ToLower().Trim()));
+            var normalizedSearch = searchQuery.ToLower().Trim();
+            Query.Where(x => x.Note.ToLower().Trim().Contains(normalizedSearch) || (x.Guest.Name + " " + x.Guest.Surname).ToLower().Trim().Contains(normalizedSearch));
         }
     }
 }
