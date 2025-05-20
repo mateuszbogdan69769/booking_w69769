@@ -4,10 +4,12 @@ using System.Text.Json;
 using ApiApplication.Bookings.Commands;
 using ApiApplication.DTOs;
 using ApiApplication.Queries.Bookings;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookingAPI.Controllers;
 
+[Authorize]
 [Tags("Booking")]
 public class BookingController : BasicApiController
 {

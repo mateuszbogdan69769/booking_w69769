@@ -1,3 +1,4 @@
+import { AuthorizationData } from '@/ApiModels/AuthorizationData';
 import { getData, postData } from './global.service';
 
 export async function isEmailTaken(email: string): Promise<boolean> {
@@ -7,7 +8,7 @@ export async function isEmailTaken(email: string): Promise<boolean> {
 export async function login(data: {
   username: string;
   password: string;
-}): Promise<boolean> {
+}): Promise<AuthorizationData | null> {
   return await postData('Account', 'login', data);
 }
 

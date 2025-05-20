@@ -1,9 +1,11 @@
 using ApiApplication.Bookings.Commands;
 using ApiApplication.Queries.Account;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookingAPI.Controllers;
 
+[AllowAnonymous]
 [Tags("Account")]
 public class AccountController : BasicApiController
 {
@@ -21,7 +23,7 @@ public class AccountController : BasicApiController
     }
 
     [HttpPost("login")]
-    public async Task<ActionResult<bool>> Login(LoginCommand command)
+    public async Task<ActionResult<AuthorizationData?>> Login(LoginCommand command)
     {
         return await Mediator.Send(command);
     }

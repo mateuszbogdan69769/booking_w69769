@@ -1,13 +1,21 @@
 <template>
   <div class="home-view">
     <template v-if="!loading">
-      <span>Rezerwacje ogólnie: {{ stats.totalBookings }}</span>
+      <v-container class="py-8">
+        <v-row justify="center" align="center" dense>
+          <v-col cols="12" sm="6" md="3" v-for="(stat, index) in stats" :key="index">
+            <v-card class="pa-4" elevation="4" rounded="xl">
+              <v-card-title class="text-h6 font-weight-bold text-center">
+                {{ stat.title }}
+              </v-card-title>
 
-      <span>Rezerwacje dzisiaj: {{ stats.bookingsToday }}</span>
-
-      <span>Goście ogólnie: {{ stats.totalGuests }}</span>
-
-      <span>Goście dzisiaj: {{ stats.peoplesToday }}</span>
+              <v-card-text class="text-center">
+                <div class="text-h4 font-weight-bold text-primary">{{ stat.value }}</div>
+              </v-card-text>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
     </template>
 
     <Spinner v-else />
@@ -15,16 +23,27 @@
 </template>
 <script lang="ts" setup>
 import { Stats } from '@/ApiModels/Stats';
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { getStatistics } from '../home.service';
 import Spinner from '@/components/Spinner.vue';
 
-const stats = ref(new Stats());
+const statsData = ref(new Stats());
 const loading = ref(false);
 
+const stats = computed(() => [
+  { title: 'Rezerwacje ogólnie', value: statsData.value.totalBookings },
+  { title: 'Rezerwacje dzisiaj', value: statsData.value.bookingsToday },
+  { title: 'Goście ogólnie', value: statsData.value.totalGuests },
+  { title: 'Goście dzisiaj', value: statsData.value.peoplesToday },
+]);
+
 async function loadStats(): Promise<void> {
+  setTimeout(() => {
+    loading.value = false;
+  }, 4000);
+
   loading.value = true;
-  stats.value = await getStatistics();
+  statsData.value = await getStatistics();
   loading.value = false;
 }
 

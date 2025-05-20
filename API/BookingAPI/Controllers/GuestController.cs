@@ -1,10 +1,12 @@
 using ApiApplication.Bookings.Guests;
 using ApiApplication.DTOs;
 using ApiApplication.Queries.Guests;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookingAPI.Controllers;
 
+[Authorize]
 [Tags("Guest")]
 public class GuestController : BasicApiController
 {

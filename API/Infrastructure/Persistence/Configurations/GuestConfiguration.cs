@@ -17,5 +17,7 @@ public class GuestConfiguration : IEntityTypeConfiguration<Guest>
         entity.Property(e => e.Name).HasColumnType("text");
 
         entity.Property(e => e.Surname).HasColumnType("text");
+
+        entity.Property(e => e.CreatedAt).HasColumnType("timestamp with time zone");
     }
 }

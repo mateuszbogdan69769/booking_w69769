@@ -8,6 +8,7 @@
     :placeholder="placeholder"
     :prepend-inner-icon="prependIcon"
     :type="type"
+    :min-width="110"
     density="compact"
     variant="outlined"
   />

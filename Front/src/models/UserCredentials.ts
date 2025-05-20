@@ -28,6 +28,10 @@ export class UserCredentials {
         required: {
           $validator: !!this.password,
           $message: 'Hasło jest wymagane'
+        },
+        minLength: {
+          $validator: !!this.password && this.password.length >= 6,
+          $message: 'Minimalna długość hasła wynosi 6'
         }
       }
     };

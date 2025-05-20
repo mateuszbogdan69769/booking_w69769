@@ -1,7 +1,21 @@
 <template>
   <div class="bookings-view">
-    <div class="bookings-view__header">
+    <div class="bookings-view__header pt-2">
       <v-btn color="blue" variant="tonal" @click="addBooking">Dodaj rezerwacje</v-btn>
+
+      <div class="d-flex ga-4">
+        <DatePicker
+          v-model="bookingsStore.filter.dateFrom"
+          label="Od"
+          @update:modelValue="bookingsStore.loadBookings"
+        />
+
+        <DatePicker
+          v-model="bookingsStore.filter.dateTo"
+          label="Do"
+          @update:modelValue="bookingsStore.loadBookings"
+        />
+      </div>
     </div>
 
     <div class="bookings-view__content">
@@ -9,6 +23,8 @@
         :headers="BookingTableHeaders"
         :items="bookingsStore.bookings"
         :items-per-page="25"
+        :sort-by="[{ key: 'createdAt', order: 'desc' }]"
+        fixed-header
         no-data-text="Brak rezerwacji"
         :loading="globalStore.loading"
       >
@@ -22,6 +38,10 @@
 
         <template #item.guest="{ item }">
           <span>{{ item.guest.fullName }}</span>
+        </template>
+
+        <template #item.createdAt="{ item }">
+          <span>{{ DateHelper.GetDisplayDateInCurrentTimeZone(item.createdAt) }}</span>
         </template>
 
         <template #item.actions="{ item }">
@@ -52,17 +72,17 @@
       :title="isEditing ? 'Edytuj' : 'Dodaj'"
     >
       <template #text>
-        <div class="d-flex flex-column">
+        <Form ref="bookingForm" class="d-flex flex-column ga-3">
           <TextField
             v-model="bookingData.name"
-            :disabled="isEditing"
+            :rules="[$validMsg(bookingData.v$.name.required)]"
             label="Imię"
             placeholder="Jan"
           />
 
           <TextField
             v-model="bookingData.surname"
-            :disabled="isEditing"
+            :rules="[$validMsg(bookingData.v$.surname.required)]"
             label="Nazwisko"
             placeholder="Kowalski"
           />
@@ -95,7 +115,7 @@
             variant="outlined"
             hide-details
           />
-        </div>
+        </Form>
       </template>
 
       <v-divider></v-divider>
@@ -111,9 +131,9 @@
   </v-dialog>
 </template>
 <script lang="ts" setup>
-import TimePicker from '../../../components/TimePicker.vue';
 import DatePicker from '../../../components/DatePicker.vue';
-import { onMounted, ref } from 'vue';
+import TimePicker from '../../../components/TimePicker.vue';
+import { onMounted, ref, watch } from 'vue';
 import { useBookingsStore } from '../bookings.store';
 import { BookingTableHeaders } from '../data/BookingTableHeaders';
 import { DateHelper } from '@/helpers/DateHelper';
@@ -123,6 +143,9 @@ import TextField from '@/components/TextField.vue';
 import { useSearchStore } from '@/stores/search.store';
 import { watchDebounced } from '@vueuse/core';
 import { useGlobalStore } from '@/stores/global.store';
+import { BookingFilter } from '@/models/BookingFilter';
+import Form from '@/components/Form.vue';
+import { GlobalHelper } from '@/helpers/GlobalHelper';
 
 const bookingsStore = useBookingsStore();
 const searchStore = useSearchStore();
@@ -130,6 +153,8 @@ const globalStore = useGlobalStore();
 
 const isEditing = ref(false);
 const dialogVisible = ref(false);
+
+const bookingForm = ref<InstanceType<typeof Form>>();
 
 const bookingData = ref(new BookingViewModel());
 
@@ -161,6 +186,9 @@ async function openDeleteDialog(id: number): Promise<void> {
 }
 
 async function handleSaveClick(): Promise<void> {
+  const formValid = await bookingForm.value.validate();
+  if (!formValid) return;
+
   if (isEditing.value) {
     await bookingsStore.editBooking(bookingData.value);
   } else {
@@ -169,6 +197,22 @@ async function handleSaveClick(): Promise<void> {
 
   dialogVisible.value = false;
 }
+
+watch(
+  () => [bookingData.value.startDate, bookingData.value.endDate],
+  ([start, end]) => {
+    if (start > end) {
+      bookingData.value.endDate = GlobalHelper.deepCopy(start);
+    }
+
+    const isSameDay =
+      bookingData.value.startDate.toISODate() === bookingData.value.startDate.toISODate();
+
+    if (isSameDay && start.toISO() > end.toISO()) {
+      bookingData.value.endDate = start.plus({ hours: 1 });
+    }
+  }
+);
 
 watchDebounced(
   () => searchStore.searchBarValue,
@@ -179,7 +223,10 @@ watchDebounced(
   { debounce: 250, maxWait: 500 }
 );
 
-onMounted(bookingsStore.loadBookings);
+onMounted(() => {
+  bookingsStore.filter = new BookingFilter();
+  bookingsStore.loadBookings();
+});
 </script>
 <style lang="scss" scoped>
 .bookings-view {
@@ -187,15 +234,24 @@ onMounted(bookingsStore.loadBookings);
   flex-direction: column;
   gap: 25px;
   flex-grow: 1;
+  overflow: hidden;
   &__header {
     display: flex;
+    align-items: center;
+    justify-content: space-between;
     gap: 15px;
   }
   &__content {
     flex-grow: 1;
-    .v-data-table {
+    overflow: hidden;
+    :deep .v-data-table {
       flex-grow: 1;
       height: 100%;
+      &__td {
+        span {
+          white-space: nowrap;
+        }
+      }
     }
   }
 }
