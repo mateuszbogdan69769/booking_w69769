@@ -13,4 +13,6 @@ export class Booking {
   note = '';
   @Type(() => Guest)
   guest = new Guest();
+  @Transform(DateTimeTransformer)
+  createdAt = DateTime.utc();
 }

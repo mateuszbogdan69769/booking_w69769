@@ -4,27 +4,38 @@ import { ITableHeader } from '@/interfaces/ITableHeader';
 export const BookingTableHeaders: ITableHeader<Booking>[] = [
   {
     title: 'Start',
-    key: 'startDate'
+    key: 'startDate',
+    sortable: true
   },
   {
     title: 'Koniec',
-    key: 'endDate'
+    key: 'endDate',
+    sortable: false
   },
   {
     title: 'Gość',
-    key: 'guest'
+    key: 'guest',
+    sortable: false
   },
   {
     title: 'Ilość osób',
-    key: 'partySize'
+    key: 'partySize',
+    sortable: false
   },
   {
     title: 'Notatka',
-    key: 'note'
+    key: 'note',
+    sortable: false
+  },
+  {
+    title: 'Data utworzenia',
+    key: 'createdAt',
+    sortable: true
   },
   {
     title: 'Akcje',
     key: 'actions',
-    align: 'center'
+    align: 'center',
+    sortable: false
   }
 ];

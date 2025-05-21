@@ -10,6 +10,7 @@ public class Booking : BasicEntity
     public int GuestId { get; protected set; }
     public int PartySize { get; protected set; }
     public string Note { get; protected set; }
+    public DateTime CreatedAt { get; protected set; }
 
     public virtual Guest Guest { get; protected set; } = null!;
 
@@ -23,6 +24,7 @@ public class Booking : BasicEntity
         Guest = guest;
         PartySize = partySize;
         Note = note;
+        CreatedAt = DateTime.UtcNow;
     }
 
     public void Update(DateTime startDate, DateTime endDate, int partySize, string note)

@@ -10,6 +10,7 @@ public class BookingDto
     public int PartySize { get; set; }
     public string Note { get; set; } = string.Empty;
     public GuestDto Guest { get; set; } = null!;
+    public DateTime CreatedAt { get; set; }
 
     public static BookingDto Map(Booking booking)
     {
@@ -20,7 +21,8 @@ public class BookingDto
             EndDate = booking.EndDate,
             PartySize = booking.PartySize,
             Note = booking.Note,
-            Guest = GuestDto.Map(booking.Guest)
+            Guest = GuestDto.Map(booking.Guest),
+            CreatedAt = booking.CreatedAt
         };
     }
 }

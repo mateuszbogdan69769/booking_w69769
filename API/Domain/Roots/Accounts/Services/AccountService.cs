@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Domain.Helpers;
+﻿using Domain.Helpers;
 using Domain.Roots.Accounts.Repos;
 using Domain.Roots.Accounts.Specyfications;
 using Microsoft.Extensions.Configuration;
@@ -17,17 +16,11 @@ public class AccountService : IAccountService
         _configuration = configuration;
     }
 
-    public async Task AddAccount(string name, string userName, string password)
+    public async Task AddAccount(string externalId, string name, string userName, string password)
     {
-        var account = await GetAccountByUsername(userName);
-        if (account != null)
-        {
-            throw new ValidationException($"Użytkownik {userName} już istnieje");
-        }
-
         var passwordService = new PasswordService(_configuration);
         var passwordHash = passwordService.CreatePasswordHash(password);
-        var newAccount = new Account(name, userName, passwordHash);
+        var newAccount = new Account(externalId, name, userName, passwordHash);
         await _accountRepository.AddAsync(newAccount);
     }
 
@@ -35,17 +28,5 @@ public class AccountService : IAccountService
     {
         var spec = new AccountByUsernameSpec(userName);
         return await _accountRepository.FirstOrDefaultAsync(spec);
-    }
-
-    public async Task<bool> Login(string userName, string password)
-    {
-        var account = await GetAccountByUsername(userName);
-        if (account is null) return false;
-
-        var passwordService = new PasswordService(_configuration);
-        var passwordCorrect = passwordService.VerifyPassword(password, account.PasswordHash);
-        if (!passwordCorrect) return false;
-
-        return true;
     }
 }

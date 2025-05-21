@@ -1,6 +1,9 @@
+using Domain.Enums;
 using Domain.Roots.Accounts.Services;
 using FluentValidation;
 using MediatR;
+using Microsoft.Extensions.Configuration;
+using Supabase;
 
 namespace ApiApplication.Bookings.Commands;
 
@@ -24,14 +27,33 @@ public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
 public class RegisterCommandHandler : IRequestHandler<RegisterCommand>
 {
     private readonly IAccountService _accountService;
+    private readonly IConfiguration _configuration;
 
-    public RegisterCommandHandler(IAccountService accountService)
+    public RegisterCommandHandler(IAccountService accountService, IConfiguration configuration)
     {
         _accountService = accountService;
+        _configuration = configuration;
     }
 
     public async Task Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
-        await _accountService.AddAccount(request.Name, request.Username, request.Password);
+        var account = await _accountService.GetAccountByUsername(request.Username);
+        if (account != null)
+        {
+            throw new ValidationException($"Użytkownik {request.Username} już istnieje");
+        }
+
+        var options = new SupabaseOptions
+        {
+            AutoConnectRealtime = true
+        };
+
+        var supabase = new Client(_configuration[ConfigConsts.SupabaseUrl], _configuration[ConfigConsts.SupabaseKey], options);
+
+        await supabase.InitializeAsync();
+
+        var session = await supabase.Auth.SignUp(request.Username, request.Password);
+
+        await _accountService.AddAccount(session.User.Id, request.Name, request.Username, request.Password);
     }
 }

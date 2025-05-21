@@ -17,7 +17,10 @@
 
       <TextField
         v-model="userCredentials.password"
-        :rules="[$validMsg(userCredentials.v$.password.required)]"
+        :rules="[
+          $validMsg(userCredentials.v$.password.required),
+          $validMsg(userCredentials.v$.password.minLength),
+        ]"
         :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
         :type="visible ? 'text' : 'password'"
         placeholder="Wpisz hasło"

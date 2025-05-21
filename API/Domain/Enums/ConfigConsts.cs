@@ -8,5 +8,12 @@ public static class ConfigConsts
     public const string DatabaseLogin = "Database:Login";
     public const string DatabasePassword = "Database:Password";
 
+    public const string IdentityHost = "Identity:Host";
+    public const string IdentityValidAudience = "Identity:ValidAudience";
+    public const string IdentitySecret = "Identity:Secret";
+
+    public const string SupabaseUrl = "Supabase:Url";
+    public const string SupabaseKey = "Supabase:Key";
+
     public const string PasswordHashSecret = "PasswordHashSecret";
 }
