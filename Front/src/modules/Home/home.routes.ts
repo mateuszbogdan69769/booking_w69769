@@ -8,6 +8,9 @@ export const HomeRoutes = [
     components: {
       default: () => import('@/modules/Home/views/HomeMain.vue'),
       viewHeader: ViewHeader
+    },
+    meta: {
+      requiresAuthorization: true
     }
   }
 ];

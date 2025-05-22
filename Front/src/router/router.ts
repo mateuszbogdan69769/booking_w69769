@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router';
 import { AccountRoutesTitles } from '@/data/AccountRoutesTitles';
 import { BookingRoutesTitles } from '@/data/BookingRoutesTitles';
 import { BookingRoutes } from '@/data/booking.routes';
+import { setWindowTitle } from '@/helpers/router.helpers';
+import { useAccountStore } from '@/stores/account.store';
 
 const defaultRoute = {
   path: '/:pathMatch(.*)*',
@@ -42,5 +44,26 @@ const router = createRouter({
   history: createWebHistory('/'),
   routes: [...routes, defaultRoute]
 });
+
+let firstLoad = true;
+
+router.beforeEach(async (to, from, next) => {
+  const accountStore = useAccountStore();
+
+  if (firstLoad) {
+    accountStore.accessToken = localStorage.getItem('token');
+    accountStore.isLoggedIn = !!accountStore.accessToken;
+    firstLoad = false;
+  }
+
+  if (to.meta.requiresAuthorization && !accountStore.accessToken) {
+    router.push({ name: AccountRoutesTitles.Login });
+    return;
+  }
+
+  next();
+});
+
+router.afterEach((to) => setWindowTitle(to.name as string));
 
 export default router;

@@ -10,7 +10,8 @@ export const BookingsRoutes = [
       viewHeader: ViewHeader
     },
     meta: {
-      searchBar: true
+      searchBar: true,
+      requiresAuthorization: true
     }
   }
 ];

@@ -1,6 +1,6 @@
 <template>
   <div class="guests-view">
-    <div class="guests-view__header">
+    <div class="guests-view__header pt-2">
       <v-btn color="blue" variant="tonal" @click="addGuest">Dodaj goscia</v-btn>
     </div>
 

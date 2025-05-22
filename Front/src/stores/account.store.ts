@@ -51,6 +51,7 @@ export const useAccountStore = defineStore('account', {
     },
     async logout(): Promise<void> {
       this.isLoggedIn = false;
+      localStorage.removeItem('token');
       await router.push({ name: AccountRoutesTitles.Login });
     }
   },
