@@ -7,6 +7,7 @@ export class Guest {
   id = 0;
   name = '';
   surname = '';
+  note = '';
   @Transform(DateTimeTransformer)
   createdAt = DateTime.utc();
   @Type(() => Booking)

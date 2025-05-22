@@ -8,6 +8,10 @@ export const GuestsRoutes = [
     components: {
       default: () => import('@/modules/Guests/views/GuestsView.vue'),
       viewHeader: ViewHeader
+    },
+    meta:{
+      searchBar: true
     }
+
   }
 ];
