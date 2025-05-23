@@ -11,6 +11,7 @@ public class UpdateBookingCommand : IRequest
     public DateTime EndDate { get; set; }
     public int PartySize { get; set; }
     public string Note { get; set; } = string.Empty;
+    public int StatusId { get; set; }
 
     // Guest
     public string Name { get; set; } = null!;
@@ -28,6 +29,6 @@ public class UpdateBookingCommandHandler : IRequestHandler<UpdateBookingCommand>
 
     public async Task Handle(UpdateBookingCommand request, CancellationToken cancellationToken)
     {
-        await _bookingService.UpdateBooking(request.Id, request.StartDate, request.EndDate, request.PartySize, request.Note, request.Name, request.Surname);
+        await _bookingService.UpdateBooking(request.Id, request.StartDate, request.EndDate, request.PartySize, request.Note, request.Name, request.Surname, request.StatusId);
     }
 }

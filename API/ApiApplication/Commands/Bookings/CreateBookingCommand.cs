@@ -16,6 +16,7 @@ public class CreateBookingCommand : IRequest
     public DateTime EndDate { get; set; }
     public int PartySize { get; set; }
     public string Note { get; set; } = string.Empty;
+    public int StatusId { get; set; }
 }
 
 public class CreateBookingCommandValidator : AbstractValidator<CreateBookingCommand>
@@ -49,7 +50,8 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand>
             StartDate = request.StartDate,
             EndDate = request.EndDate,
             PartySize = request.PartySize,
-            Note = request.Note
+            Note = request.Note,
+            StatusId = request.StatusId
         };
 
         await _reservationService.CreateNewBooking(guestConfig, bookingConfig);

@@ -64,6 +64,13 @@ public class BookingController : BasicApiController
         return NoContent();
     }
 
+    [HttpPut("status")]
+    public async Task<ActionResult> UpdateBookingStatus(UpdateBookingStatusCommand command)
+    {
+        await Mediator.Send(command);
+        return NoContent();
+    }
+
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteBooking(int id)
     {

@@ -20,7 +20,7 @@ public class ReservationService : IReservationService
     public async Task<int> CreateNewBooking(GuestConfig guestConfig, BookingConfig bookingConfig)
     {
         var guest = await GetExistingGuestOrCreateNew(guestConfig.Name, guestConfig.Surname);
-        var booking = new Booking(bookingConfig.StartDate, bookingConfig.EndDate, guest, bookingConfig.PartySize, bookingConfig.Note);
+        var booking = new Booking(bookingConfig.StartDate, bookingConfig.EndDate, guest, bookingConfig.PartySize, bookingConfig.Note, bookingConfig.StatusId);
         var bookingId = await _bookingService.AddBooking(booking);
         return bookingId;
     }

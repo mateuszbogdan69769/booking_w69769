@@ -31,5 +31,11 @@ public class BookingConfiguration : IEntityTypeConfiguration<Booking>
               .HasForeignKey(x => x.GuestId)
               .OnDelete(DeleteBehavior.Cascade)
               .HasConstraintName("fk_guest_booking");
+
+        entity.HasOne(x => x.Status)
+              .WithMany(x => x.Bookings)
+              .HasForeignKey(x => x.StatusId)
+              .OnDelete(DeleteBehavior.SetNull)
+              .HasConstraintName("fk_status_booking");
     }
 }
