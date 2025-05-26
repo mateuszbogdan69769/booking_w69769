@@ -3,7 +3,7 @@
     <div class="bookings-view__header pt-2">
       <v-btn color="blue" variant="tonal" @click="addBooking">Dodaj rezerwacje</v-btn>
 
-      <div class="d-flex ga-4">
+      <div class="d-flex flex-wrap ga-4">
         <DatePicker
           v-model="bookingsStore.filter.dateFrom"
           label="Od"
@@ -29,7 +29,7 @@
         :loading="globalStore.loading"
       >
         <template #item.statusId="{ item }">
-          <div class="d-flex align-center">
+          <div class="d-flex align-center" style="min-width: 140px">
             <StatusSelect
               :model-value="item.statusId"
               plain
@@ -264,7 +264,7 @@ onMounted(() => {
   overflow: hidden;
   &__header {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     gap: 15px;
   }

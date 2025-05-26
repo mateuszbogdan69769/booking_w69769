@@ -10,7 +10,7 @@
     return-object
   >
     <template #selection="{ item }">
-      <div class="d-flex align-center">
+      <div class="d-flex align-center selected-item">
         <div :style="{ background: item.raw.color }" class="dot mr-2" />
 
         <span>{{ item.raw.name }} </span>
@@ -67,8 +67,20 @@ onMounted(async () => {
 </script>
 <style lang="scss" scoped>
 .dot {
+  min-width: 15px;
   width: 15px;
   height: 15px;
   border-radius: 50%;
+}
+:deep .v-select__selection {
+  overflow: hidden;
+  .selected-item {
+    overflow: hidden;
+    span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
 }
 </style>

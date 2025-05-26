@@ -1,10 +1,10 @@
 <template>
   <div class="status-view">
-    <div class="status-view__header pt-2">
+    <div class="status-view__header ga-4 pt-2">
       <v-btn color="blue" variant="tonal" @click="addStatus">Dodaj status</v-btn>
 
       <v-slide-x-reverse-transition>
-        <div v-if="orderChanged" class="d-flex ga-4">
+        <div v-if="orderChanged" class="d-flex flex-wrap ga-4" style="overflow: hidden">
           <v-btn color="green" variant="tonal" @click="saveOrder">Zapisz kolejność</v-btn>
 
           <v-btn color="red" variant="outlined" @click="revertOrder">
@@ -215,8 +215,9 @@ onMounted(async () => {
   flex-grow: 1;
   overflow: hidden;
   &__header {
+    overflow: hidden;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
   }
   &__content {
