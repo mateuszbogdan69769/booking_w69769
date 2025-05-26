@@ -16,7 +16,7 @@ public class StatusService : IStatusService
     public async Task AddStatus(Status status)
     {
         var maxOrder = await GetMaxOrder();
-        status.SetOrder(maxOrder);
+        status.SetOrder(maxOrder + 1);
         await _statusRepository.AddAsync(status);
     }
 
@@ -87,6 +87,11 @@ public class StatusService : IStatusService
     private async Task<int> GetMaxOrder()
     {
         var allStatuses = await GetAllStatuses();
+        if (allStatuses.Count == 0)
+        {
+            return 0;
+        }
+
         return allStatuses.Max(x => x.Order);
     }
 }

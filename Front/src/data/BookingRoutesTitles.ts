@@ -2,5 +2,6 @@ export const BookingRoutesTitles = {
   Booking: 'Booking',
   Home: 'Strona główna',
   Bookings: 'Rezerwacje',
-  Guests: 'Goście'
+  Guests: 'Goście',
+  Statuses: 'Statusy'
 };

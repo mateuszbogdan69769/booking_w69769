@@ -31,6 +31,13 @@ export async function updateBooking(
   await putData('Booking', '', data, msg);
 }
 
+export async function updateBookingStatus(
+  data: { id: number; statusId: number },
+  msg: MessageModel
+): Promise<void> {
+  await putData('Booking', 'status', data, msg);
+}
+
 export async function deleteBooking(
   id: number,
   msg: MessageModel

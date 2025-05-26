@@ -15,4 +15,5 @@ export class Booking {
   guest = new Guest();
   @Transform(DateTimeTransformer)
   createdAt = DateTime.utc();
+  statusId = 0;
 }

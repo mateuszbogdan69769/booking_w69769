@@ -16,5 +16,10 @@ export const BookingMenuItems: IMenuItem[] = [
     title: BookingRoutesTitles.Guests,
     to: { name: BookingRoutesTitles.Guests },
     iconName: 'mdi-star'
+  },
+  {
+    title: BookingRoutesTitles.Statuses,
+    to: { name: BookingRoutesTitles.Statuses },
+    iconName: 'mdi-cog-outline'
   }
 ];

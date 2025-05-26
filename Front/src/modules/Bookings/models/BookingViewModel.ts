@@ -14,6 +14,7 @@ export class BookingViewModel {
   endDate = DateTime.utc().plus({ hour: 1 }).startOf('hour').plus({ hour: 1 });
   partySize = 1;
   note = '';
+  statusId = 0;
 
   setFromBooking(booking: Booking): void {
     this.id = booking.id;

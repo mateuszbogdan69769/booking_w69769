@@ -3,6 +3,11 @@ import { ITableHeader } from '@/interfaces/ITableHeader';
 
 export const BookingTableHeaders: ITableHeader<Booking>[] = [
   {
+    title: 'Status',
+    key: 'statusId',
+    sortable: false
+  },
+  {
     title: 'Start',
     key: 'startDate',
     sortable: true

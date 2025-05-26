@@ -28,6 +28,16 @@
         no-data-text="Brak rezerwacji"
         :loading="globalStore.loading"
       >
+        <template #item.statusId="{ item }">
+          <div class="d-flex align-center">
+            <StatusSelect
+              :model-value="item.statusId"
+              plain
+              @update:modelValue="updateStatus(item.id, $event)"
+            />
+          </div>
+        </template>
+
         <template #item.startDate="{ item }">
           <span>{{ DateHelper.GetDisplayDateInCurrentTimeZone(item.startDate) }}</span>
         </template>
@@ -108,6 +118,10 @@
             <TimePicker v-model="bookingData.endDate" />
           </div>
 
+          <div class="d-flex mb-5 ga-5">
+            <StatusSelect v-model="bookingData.statusId" />
+          </div>
+
           <v-textarea
             v-model="bookingData.note"
             label="Notatka"
@@ -146,6 +160,10 @@ import { useGlobalStore } from '@/stores/global.store';
 import { BookingFilter } from '@/models/BookingFilter';
 import Form from '@/components/Form.vue';
 import { GlobalHelper } from '@/helpers/GlobalHelper';
+import StatusSelect from '@/components/StatusSelect.vue';
+import { updateBookingStatus } from '../bookings.services';
+import { MessageTypeEnum } from '@/enums/MessageTypeEnum';
+import { MessageModel } from '@/models/MessageModel';
 
 const bookingsStore = useBookingsStore();
 const searchStore = useSearchStore();
@@ -196,6 +214,15 @@ async function handleSaveClick(): Promise<void> {
   }
 
   dialogVisible.value = false;
+}
+
+async function updateStatus(bookingId: number, statusId: number): Promise<void> {
+  const msg = new MessageModel(
+    MessageTypeEnum.Success,
+    'Status został zaktualizowany pomyślnie'
+  );
+  await updateBookingStatus({ id: bookingId, statusId }, msg);
+  bookingsStore.loadBookings();
 }
 
 watch(
