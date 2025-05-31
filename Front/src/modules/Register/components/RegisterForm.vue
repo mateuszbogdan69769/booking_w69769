@@ -17,9 +17,11 @@
         :rules="[
           $validMsg(userCredentials.v$.email.required),
           $validMsg(userCredentials.v$.email.valid),
+          $validMsg(userCredentials.v$.email.taken),
         ]"
         placeholder="Wpisz e-mail"
         prepend-inner-icon="mdi-email-outline"
+        @input="userCredentials.emailTaken = false"
       />
 
       <div class="text-subtitle-1 text-medium-emphasis">Hasło</div>
@@ -30,8 +32,8 @@
           $validMsg(userCredentials.v$.password.required),
           $validMsg(userCredentials.v$.password.minLength),
         ]"
-        :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
-        density="compact"
+        :append-inner-icon="visible ? 'mdi-eye' : 'mdi-eye-off'"
+        :type="visible ? 'text' : 'password'"
         placeholder="Wpisz hasło"
         prepend-inner-icon="mdi-lock-outline"
         @click:append-inner="visible = !visible"
@@ -81,6 +83,7 @@ const visible = ref(false);
 const userCredentials = ref(new UserCredentials());
 
 async function handleRegister(): Promise<void> {
+  await userCredentials.value.checkEmailAvailability();
   const registerFormValid = await registerForm.value?.validate();
   if (registerFormValid) {
     await accountStore.register(userCredentials.value);

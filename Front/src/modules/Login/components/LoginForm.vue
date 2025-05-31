@@ -21,7 +21,7 @@
           $validMsg(userCredentials.v$.password.required),
           $validMsg(userCredentials.v$.password.minLength),
         ]"
-        :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+        :append-inner-icon="visible ? 'mdi-eye' : 'mdi-eye-off'"
         :type="visible ? 'text' : 'password'"
         placeholder="Wpisz hasło"
         prepend-inner-icon="mdi-lock-outline"

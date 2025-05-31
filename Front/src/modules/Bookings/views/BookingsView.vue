@@ -82,7 +82,11 @@
       :title="isEditing ? 'Edytuj' : 'Dodaj'"
     >
       <template #text>
-        <Form ref="bookingForm" class="d-flex flex-column ga-3">
+        <Form
+          ref="bookingForm"
+          class="d-flex flex-column ga-3 pt-1"
+          style="overflow: auto; max-height: 100%"
+        >
           <TextField
             v-model="bookingData.name"
             :rules="[$validMsg(bookingData.v$.name.required)]"

@@ -34,3 +34,9 @@ input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
     transition: background-color 9999s ease-in-out 0s;
 }
+
+.v-card-text {
+    flex-direction: column;
+    overflow: hidden;
+    display: flex;
+}

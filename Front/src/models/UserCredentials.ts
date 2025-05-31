@@ -1,3 +1,4 @@
+import { isEmailTaken } from '@/services/account.service';
 import { ValidationHelper } from './../helpers/ValidationHelper';
 import { IValidationResult } from '@/interfaces/IValidationResult';
 
@@ -5,6 +6,12 @@ export class UserCredentials {
   name = '';
   email = '';
   password = '';
+
+  emailTaken = false;
+
+  async checkEmailAvailability(): Promise<void> {
+    this.emailTaken = await isEmailTaken(this.email);
+  }
 
   get v$(): IValidationResult {
     return {
@@ -22,6 +29,10 @@ export class UserCredentials {
         valid: {
           $validator: !!this.email && ValidationHelper.isEmailValid(this.email),
           $message: 'E-mail nie jest prawidłowy'
+        },
+        taken: {
+          $validator: !this.emailTaken,
+          $message: 'E-mail jest już zajęty'
         }
       },
       password: {
