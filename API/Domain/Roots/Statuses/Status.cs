@@ -11,7 +11,7 @@ public class Status : BasicEntity
     public int Order { get; protected set; }
     public DateTime? ArchivedAt { get; protected set; }
 
-    public ICollection<Booking> Bookings { get; protected set; } = null!;
+    public virtual ICollection<Booking> Bookings { get; protected set; } = null!;
 
     private Status()
     {
