@@ -1,0 +1,24 @@
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Maui.MainPage">
+
+    <Grid>
+        <WebView x:Name="MyWebView"
+                 Source="https://app.mbogdan.pl"
+                 IsVisible="False"
+                 HorizontalOptions="FillAndExpand"
+                 VerticalOptions="FillAndExpand" />
+
+        <StackLayout x:Name="OfflineView"
+                     IsVisible="False"
+                     VerticalOptions="Center"
+                     HorizontalOptions="Center">
+            <Label Text="Brak połączenia z internetem"
+                   FontSize="20"
+                   HorizontalOptions="Center" />
+            <Label Text="Aplikacja nie może działać offline."
+                   FontSize="14"
+                   HorizontalOptions="Center" />
+        </StackLayout>
+    </Grid>
+</ContentPage>
