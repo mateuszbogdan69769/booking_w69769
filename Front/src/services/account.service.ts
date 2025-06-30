@@ -9,7 +9,7 @@ export async function login(data: {
   username: string;
   password: string;
 }): Promise<AuthorizationData | null> {
-  return await postData('Account', 'login', data);
+  return await postData('Account', 'login', data, undefined, false);
 }
 
 export async function register(data: {
@@ -17,5 +17,5 @@ export async function register(data: {
   username: string;
   password: string;
 }): Promise<boolean> {
-  return await postData('Account', 'register', data);
+  return await postData('Account', 'register', data, undefined, false);
 }

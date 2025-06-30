@@ -40,6 +40,7 @@
       />
 
       <v-btn
+        :disabled="globalStore.loading"
         class="mb-8"
         color="blue"
         size="large"
@@ -73,7 +74,9 @@ import { useAccountStore } from '@/stores/account.store';
 import { AccountRoutesTitles } from '@/data/AccountRoutesTitles';
 import { UserCredentials } from '@/models/UserCredentials';
 import router from '@/router/router';
+import { useGlobalStore } from '@/stores/global.store';
 
+const globalStore = useGlobalStore();
 const accountStore = useAccountStore();
 
 const registerForm = ref<InstanceType<typeof Form>>();

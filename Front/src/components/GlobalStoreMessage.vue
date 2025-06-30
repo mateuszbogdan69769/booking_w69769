@@ -31,6 +31,7 @@ import { MessageHelper } from '@/helpers/MessageHelper';
   padding: 0 20px;
   .v-alert:deep() {
     width: min(100%, 400px);
+    background: #fff;
     .v-alert-title {
       font-size: 14px;
     }

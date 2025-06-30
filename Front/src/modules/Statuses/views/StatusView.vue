@@ -4,7 +4,11 @@
       <v-btn color="blue" variant="tonal" @click="addStatus">Dodaj status</v-btn>
 
       <v-slide-x-reverse-transition>
-        <div v-if="orderChanged" class="d-flex flex-wrap ga-4" style="overflow: hidden">
+        <div
+          v-if="orderChanged"
+          class="d-flex flex-wrap ga-4 pb-1"
+          style="overflow: hidden"
+        >
           <v-btn color="green" variant="tonal" @click="saveOrder">Zapisz kolejność</v-btn>
 
           <v-btn color="red" variant="outlined" @click="revertOrder">
@@ -46,6 +50,7 @@
             v-model="itemsComputed"
             :animation="150"
             tag="tbody"
+            handle=".drag-handle"
             @change="orderChanged = true"
           >
             <tr
@@ -54,11 +59,11 @@
               class="v-data-table__tr"
               style="cursor: grab"
             >
-              <td class="v-data-table__td v-data-table-column--align-start">
+              <td class="v-data-table__td v-data-table-column--align-start drag-handle">
                 {{ item.name }}
               </td>
 
-              <td class="v-data-table__td v-data-table-column--align-start">
+              <td class="v-data-table__td v-data-table-column--align-start drag-handle">
                 <div :style="`background: ${item.color}`" class="color-box"></div>
               </td>
 

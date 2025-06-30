@@ -29,6 +29,7 @@
       />
 
       <v-btn
+        :disabled="globalStore.loading"
         class="mb-8"
         color="blue"
         size="large"
@@ -62,7 +63,9 @@ import { AccountRoutesTitles } from '@/data/AccountRoutesTitles';
 import { UserCredentials } from '@/models/UserCredentials';
 import router from '@/router/router';
 import TextField from '@/components/TextField.vue';
+import { useGlobalStore } from '@/stores/global.store';
 
+const globalStore = useGlobalStore();
 const accountStore = useAccountStore();
 
 const loginForm = ref<InstanceType<typeof Form>>();

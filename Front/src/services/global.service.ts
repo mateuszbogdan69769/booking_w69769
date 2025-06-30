@@ -43,7 +43,8 @@ export async function postData<RequestType, ReturnType>(
   apiRoute: string,
   apiController: string,
   body?: RequestType,
-  message?: MessageModel
+  message?: MessageModel,
+  addToken = true
 ): Promise<ReturnType> {
   const globalStore = useGlobalStore();
 
@@ -53,7 +54,7 @@ export async function postData<RequestType, ReturnType>(
   const postApiResponse = await useGlobalStore().useLoading(async () => {
     try {
       return await axios.post<ReturnType>(url, instanceToPlain(body), {
-        headers: getAuthorizationHeader()
+        headers: addToken ? getAuthorizationHeader() : {}
       });
     } catch (e: any) {
       handleError(e);
